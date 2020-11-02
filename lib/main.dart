@@ -2,9 +2,22 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return MyAppState();
+  }
+}
+
+class MyAppState extends State<MyApp> {
+  var titles = ["Button 1..", "Button 2..", "Button 3.."];
+  var titleIndex = 0;
+
   void buttonClick() {
-    print("Button clicked !");
+    setState(() {
+      titleIndex = titleIndex + 1;
+      print("Button clicked !" + titleIndex.toString());
+    });
   }
 
   @override
@@ -16,7 +29,7 @@ class MyApp extends StatelessWidget {
         ),
         body: Column(
           children: [
-            Text("\nNew in Flutter.\n"),
+            Text("\nNew in Flutter.  " + titles[titleIndex] + "\n"),
             RaisedButton(child: Text("Button 1"), onPressed: buttonClick),
             Row(
               children: [
