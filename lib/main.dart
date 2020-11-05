@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'question.dart';
-import 'answer.dart';
+import 'package:flutter_app/result.dart';
+import 'result.dart';
+import 'quesans.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,26 +13,62 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var _questionList = [
+  final _questionList = const [
     {
       "question": "Five Colors ?",
-      "answer": ["Red", "Blue", "Orange", "Green", "Black"]
+      "answer": [
+        {"txt": "Red", "score": 10},
+        {"txt": "Blue", "score": 5},
+        {"txt": "Orange", "score": 4},
+        {"txt": "Green", "score": 2},
+        {"txt": "Black", "score": 1}
+      ]
     },
     {
       "question": "Five Animals ?",
-      "answer": ["Cow", "Goat", "Tiger", "Lion", "Deer"]
+      "answer": [
+        {"txt": "Cow", "score": 10},
+        {"txt": "Goat", "score": 5},
+        {"txt": "Tiger", "score": 4},
+        {"txt": "Lion", "score": 2},
+        {"txt": "Deer", "score": 1}
+      ]
     },
     {
       "question": "Five Vegtables ?",
-      "answer": ["Potato", "Ginger", "Garlic", "Lemon", "Banana"]
+      "answer": [
+        {"txt": "Potato", "score": 10},
+        {"txt": "Ginger", "score": 5},
+        {"txt": "Garlic", "score": 4},
+        {"txt": "Lemon", "score": 2},
+        {"txt": "Banana", "score": 1}
+      ]
     },
   ];
-  var _question = 0;
+  var _questionIndex = 0;
+  var _totalScore = 0;
 
-  void buttonClick() {
+  void _buttonClickWithAnswer(int score) {
+    _totalScore += score;
+
     setState(() {
-      _question = _question + 1;
-      print("Button clicked !" + _question.toString());
+      _questionIndex = _questionIndex + 1;
+      if (_questionList.length < _questionIndex) {
+        print("More option to choose...");
+      } else {
+        print("No option to choose...");
+      }
+      print("Button clicked ! " +
+          _questionIndex.toString() +
+          " Total Score = " +
+          _totalScore.toString());
+    });
+  }
+
+  void _resetQuizApp() {
+    setState(() {
+      _questionIndex = 0;
+      _totalScore = 0;
     });
   }
 
@@ -42,15 +79,10 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text("My Flutter App Demo !"),
         ),
-        body: Column(
-          children: [
-            Text("\nNew in Flutter.\n"),
-            Question(_questionList[_question]["question"]),
-            ...(_questionList[_question]["answer"] as List<String>)
-                .map((answer) => Answer(buttonClick, answer))
-                .toList()
-          ],
-        ),
+        body: _questionList.length > _questionIndex
+            ? QuestionAnswer(
+                _questionList, _questionIndex, _buttonClickWithAnswer)
+            : Result(_resetQuizApp, _totalScore),
       ),
     );
   }
