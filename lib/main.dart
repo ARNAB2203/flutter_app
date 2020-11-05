@@ -1,22 +1,37 @@
 import 'package:flutter/material.dart';
+import 'question.dart';
+import 'answer.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return MyAppState();
+    return _MyAppState();
   }
 }
 
-class MyAppState extends State<MyApp> {
-  var titles = ["Button 1..", "Button 2..", "Button 3.."];
-  var titleIndex = 0;
+class _MyAppState extends State<MyApp> {
+  var _questionList = [
+    {
+      "question": "Five Colors ?",
+      "answer": ["Red", "Blue", "Orange", "Green", "Black"]
+    },
+    {
+      "question": "Five Animals ?",
+      "answer": ["Cow", "Goat", "Tiger", "Lion", "Deer"]
+    },
+    {
+      "question": "Five Vegtables ?",
+      "answer": ["Potato", "Ginger", "Garlic", "Lemon", "Banana"]
+    },
+  ];
+  var _question = 0;
 
   void buttonClick() {
     setState(() {
-      titleIndex = titleIndex + 1;
-      print("Button clicked !" + titleIndex.toString());
+      _question = _question + 1;
+      print("Button clicked !" + _question.toString());
     });
   }
 
@@ -29,31 +44,11 @@ class MyAppState extends State<MyApp> {
         ),
         body: Column(
           children: [
-            Text("\nNew in Flutter.  " + titles[titleIndex] + "\n"),
-            RaisedButton(child: Text("Button 1"), onPressed: buttonClick),
-            Row(
-              children: [
-                Text("\nRow 1 in Flutter. "),
-                Text("\nRow 2 in Flutter. "),
-                Text("\nRow 3 in Flutter."),
-              ],
-            ),
-            RaisedButton(child: Text("Button 2"), onPressed: buttonClick),
-            Row(
-              children: [
-                Text("\nRow 1 in Flutter. "),
-                Text("\nRow 2 in Flutter. "),
-                Text("\nRow 3 in Flutter."),
-              ],
-            ),
-            RaisedButton(child: Text("Button 3"), onPressed: buttonClick),
-            Row(
-              children: [
-                Text("\nRow 1 in Flutter. "),
-                Text("\nRow 2 in Flutter. "),
-                Text("\nRow 3 in Flutter."),
-              ],
-            ),
+            Text("\nNew in Flutter.\n"),
+            Question(_questionList[_question]["question"]),
+            ...(_questionList[_question]["answer"] as List<String>)
+                .map((answer) => Answer(buttonClick, answer))
+                .toList()
           ],
         ),
       ),
